@@ -1,15 +1,18 @@
-import { Get, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { CacheModule } from '@nestjs/cache-manager';
-import { RedisOptions } from './configs/app-options.constants';
-import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { CacheModule } from '@nestjs/cache-manager';
+import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    CacheModule.registerAsync(RedisOptions),
+    ConfigModule.forRoot(),
     AuthModule,
+    CacheModule.register({
+      isGlobal: true,
+    }),
+    MongooseModule.forRoot(process.env.MONGO_URI),
   ],
   controllers: [AppController],
 })
