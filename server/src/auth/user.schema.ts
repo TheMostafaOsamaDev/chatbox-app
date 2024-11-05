@@ -25,6 +25,13 @@ export class User {
   ): Promise<boolean> {
     return bcrypt.compare(plainPassword, hashedPassword);
   }
+
+  // Generate a username from the email
+  static generateUsername(email: string): string {
+    const randomString = Math.random().toString(36).substring(2, 7);
+
+    return email.split('@')[0] + randomString;
+  }
 }
 
 export const userSchema = SchemaFactory.createForClass(User);

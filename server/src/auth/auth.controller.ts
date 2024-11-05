@@ -6,6 +6,7 @@ import {
   NotFoundException,
   Post,
   Req,
+  Res,
   UseInterceptors,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -14,7 +15,7 @@ import { LoginDecorator, RegisterDecorator } from './swagger.decorators';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserInterceptor } from './user.interceptor';
 import { LogInUserDto } from './dto/login-user.dto';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -35,11 +36,15 @@ export class AuthController {
   @Post('login')
   @LoginDecorator()
   @UseInterceptors(UserInterceptor)
-  async login(@Body() logInUserDto: LogInUserDto, @Req() req: Request) {
+  async login(
+    @Body() logInUserDto: LogInUserDto,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
     if (!req.isFound) {
       throw new NotFoundException('User not found');
     }
 
-    return this.authService.logIn(logInUserDto, req.user);
+    return this.authService.logIn(res, logInUserDto, req.user);
   }
 }

@@ -20,12 +20,12 @@ export class CreateUserDto {
   })
   name: string;
 
-  @IsString({ message: 'Invalid Username' })
-  @ApiProperty({
-    example: 'example',
-    description: 'User username',
-  })
-  username: string;
+  // @IsString({ message: 'Invalid Username' })
+  // @ApiProperty({
+  //   example: 'example',
+  //   description: 'User username',
+  // })
+  // username: string;
 
   @IsString({ message: 'Invalid Password' })
   @IsNotEmpty({ message: 'Password is required' })
